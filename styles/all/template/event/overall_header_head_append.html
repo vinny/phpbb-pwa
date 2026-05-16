@@ -1,0 +1,53 @@
+<!-- IF S_PWA_ENABLED -->
+<link rel="manifest" href="{U_PWA_MANIFEST}">
+<meta name="theme-color" content="{PWA_THEME_COLOUR}">
+
+<!-- Apple iOS Specific Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="{SITENAME}">
+<!-- IF PWA_ICON_192 -->
+<link rel="apple-touch-icon" href="{PWA_ICON_192}">
+<!-- ENDIF -->
+<!-- IF PWA_ICON_512 -->
+<link rel="apple-touch-icon" sizes="512x512" href="{PWA_ICON_512}">
+<!-- ENDIF -->
+<script>
+    // If official WebPush is enabled, its template hook might have injected a generic manifest.
+    // We remove any manifest link that isn't ours to prevent PWA conflicts.
+    <!-- IF S_PWA_WEBPUSH_INTEGRATION_ACTIVE -->
+    document.querySelectorAll('link[rel="manifest"]').forEach(function(el) {
+        if (el.href.indexOf('{U_PWA_MANIFEST}') === -1) {
+            el.parentNode.removeChild(el);
+        }
+    });
+	
+    // Prevent phpbbWebpushOptions from loading its own Service Worker
+    if (typeof phpbbWebpushOptions !== 'undefined') {
+        phpbbWebpushOptions.serviceWorkerUrl = '{U_PWA_SW}';
+    } else {
+        Object.defineProperty(window, 'phpbbWebpushOptions', {
+            set: function(val) {
+                if (val && val.serviceWorkerUrl) {
+                    val.serviceWorkerUrl = '{U_PWA_SW}';
+                }
+                this._phpbbWebpushOptions = val;
+            },
+            get: function() {
+                return this._phpbbWebpushOptions;
+            }
+        });
+    }
+    <!-- ENDIF -->
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('{U_PWA_SW}').then(function(registration) {
+                console.log('PWA ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                console.log('PWA ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+<!-- ENDIF -->

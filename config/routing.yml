@@ -1,0 +1,11 @@
+vinny_pwa_manifest:
+    path: /manifest.webmanifest
+    defaults: { _controller: 'vinny.pwa.controller.manifest:display' }
+
+vinny_pwa_sw:
+    path: /sw.js
+    defaults: { _controller: 'vinny.pwa.controller.sw:display' }
+
+vinny_pwa_offline:
+    path: /pwa/offline
+    defaults: { _controller: 'vinny.pwa.controller.offline:display' }

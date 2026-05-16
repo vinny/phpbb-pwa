@@ -1,0 +1,31 @@
+services:
+    vinny.pwa.listener:
+        class: vinny\pwa\event\main_listener
+        arguments:
+            - '@config'
+            - '@user'
+            - '@request'
+            - '@template'
+            - '@controller.helper'
+            - '@ext.manager'
+        tags:
+            - { name: event.listener }
+
+    vinny.pwa.controller.manifest:
+        class: vinny\pwa\controller\manifest
+        arguments:
+            - '@config'
+
+    vinny.pwa.controller.sw:
+        class: vinny\pwa\controller\sw
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@ext.manager'
+
+    vinny.pwa.controller.offline:
+        class: vinny\pwa\controller\offline
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@language'

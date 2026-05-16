@@ -1,0 +1,38 @@
+{
+    "name": "vinny/pwa",
+    "type": "phpbb-extension",
+    "description": "Progressive Web App (PWA) enhancer and Mobile detector for phpBB",
+    "homepage": "https://github.com/vinny/phpbb-pwa",
+    "version": "1.0.0",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Vinny",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.0",
+        "composer/installers": "~1.0",
+        "mobiledetect/mobiledetectlib": "^4.8"
+    },
+    "require-dev": {
+        "phpbb/epv": "dev-master"
+    },
+    "extra": {
+        "display-name": "PWA Enhancer",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "vinny\\pwa\\": ""
+        }
+    }
+}
