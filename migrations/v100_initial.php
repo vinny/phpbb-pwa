@@ -25,6 +25,19 @@ class v100_initial extends \phpbb\db\migration\migration
 	public function update_data()
 	{
 		return [
+			['module.remove', [
+				'acp',
+				'ACP_PWA',
+				[
+					'module_basename'	=> '\vinny\pwa\acp\pwa_module',
+					'modes'				=> ['settings'],
+				],
+			]],
+			['module.remove', [
+				'acp',
+				'ACP_CAT_DOT_MODS',
+				'ACP_PWA',
+			]],
 			['config.add', ['pwa_enabled', '1']],
 			['config.add', ['pwa_mobile_style_id', '0']],
 			['config.add', ['pwa_force_on_mobile', '0']],
@@ -53,6 +66,19 @@ class v100_initial extends \phpbb\db\migration\migration
 	public function revert_data()
 	{
 		return [
+			['module.remove', [
+				'acp',
+				'ACP_PWA',
+				[
+					'module_basename'	=> '\vinny\pwa\acp\pwa_module',
+					'modes'				=> ['settings'],
+				],
+			]],
+			['module.remove', [
+				'acp',
+				'ACP_CAT_DOT_MODS',
+				'ACP_PWA',
+			]],
 			['config.remove', ['pwa_enabled']],
 			['config.remove', ['pwa_mobile_style_id']],
 			['config.remove', ['pwa_force_on_mobile']],
