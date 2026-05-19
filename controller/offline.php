@@ -1,52 +1,43 @@
 <?php
 /**
  *
- * @package vinny/pwa
- * @copyright (c) 2026 Vinny
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * PWA Enhancer. An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2026 Vinny <https://github.com/vinny>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
 namespace vinny\pwa\controller;
 
+use phpbb\controller\helper;
+use phpbb\language\language;
+use phpbb\template\template;
+use Symfony\Component\HttpFoundation\Response;
+
 class offline
 {
-	/** @var \phpbb\config\config */
-	protected $config;
-
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\language\language */
+	/** @var language */
 	protected $language;
 
-	/** @var \phpbb\template\template */
+	/** @var template */
 	protected $template;
 
-	/**
-	 * Constructor
-	 *
-	 * @param \phpbb\config\config      $config
-	 * @param \phpbb\controller\helper  $helper
-	 * @param \phpbb\language\language  $language
-	 * @param \phpbb\template\template  $template
-	 */
 	public function __construct(
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
-		\phpbb\language\language $language,
-		\phpbb\template\template $template
+		helper $helper,
+		language $language,
+		template $template
 	) {
-		$this->config = $config;
 		$this->helper = $helper;
 		$this->language = $language;
 		$this->template = $template;
 	}
 
 	/**
-	 * Display offline page
-	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
 	public function display()
 	{

@@ -1,36 +1,28 @@
 <?php
 /**
  *
- * @package vinny/pwa
- * @copyright (c) 2026 Vinny
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * PWA Enhancer. An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2026 Vinny <https://github.com/vinny>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
 namespace vinny\pwa\controller;
 
+use phpbb\config\config;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class manifest
 {
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/**
-	 * Constructor
-	 *
-	 * @param \phpbb\config\config $config
-	 */
-	public function __construct(\phpbb\config\config $config)
+	public function __construct(config $config)
 	{
 		$this->config = $config;
 	}
 
-	/**
-	 * Return JSON Manifest
-	 *
-	 * @return JsonResponse
-	 */
 	public function display()
 	{
 		global $phpEx;

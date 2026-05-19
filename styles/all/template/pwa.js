@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	'use strict';
 
 	var options = window.phpbbPwaOptions || {};
@@ -46,7 +46,7 @@
 			return;
 		}
 
-		document.querySelectorAll('link[rel="manifest"]').forEach(function(element) {
+		document.querySelectorAll('link[rel="manifest"]').forEach(function (element) {
 			if (element.href.indexOf(options.manifestUrl) === -1 && element.parentNode) {
 				element.parentNode.removeChild(element);
 			}
@@ -58,25 +58,25 @@
 			return;
 		}
 
-		window.addEventListener('load', function() {
-			navigator.serviceWorker.register(options.serviceWorkerUrl).then(function(registration) {
+		window.addEventListener('load', function () {
+			navigator.serviceWorker.register(options.serviceWorkerUrl).then(function (registration) {
 				if (registration.waiting) {
 					registration.waiting.postMessage({ type: 'SKIP_WAITING' });
 				}
 
-				registration.addEventListener('updatefound', function() {
+				registration.addEventListener('updatefound', function () {
 					var installingWorker = registration.installing;
 					if (!installingWorker) {
 						return;
 					}
 
-					installingWorker.addEventListener('statechange', function() {
+					installingWorker.addEventListener('statechange', function () {
 						if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
 							installingWorker.postMessage({ type: 'SKIP_WAITING' });
 						}
 					});
 				});
-			}).catch(function(error) {
+			}).catch(function (error) {
 				if (window.console && window.console.info) {
 					window.console.info('PWA Service Worker registration failed:', error);
 				}
@@ -99,20 +99,20 @@
 			return;
 		}
 
-		window.addEventListener('beforeinstallprompt', function(event) {
+		window.addEventListener('beforeinstallprompt', function (event) {
 			event.preventDefault();
 			deferredPrompt = event;
 			banner.hidden = false;
 		});
 
-		installButton.addEventListener('click', function() {
+		installButton.addEventListener('click', function () {
 			if (!deferredPrompt) {
 				hideInstallBanner(banner);
 				return;
 			}
 
 			deferredPrompt.prompt();
-			deferredPrompt.userChoice.then(function(choice) {
+			deferredPrompt.userChoice.then(function (choice) {
 				if (choice.outcome === 'accepted') {
 					hideInstallBanner(banner);
 				}
@@ -121,12 +121,12 @@
 			});
 		});
 
-		dismissButton.addEventListener('click', function() {
+		dismissButton.addEventListener('click', function () {
 			hideInstallBanner(banner);
 			localStorageSet(dismissedKey, '1');
 		});
 
-		window.addEventListener('appinstalled', function() {
+		window.addEventListener('appinstalled', function () {
 			hideInstallBanner(banner);
 			localStorageSet(dismissedKey, '1');
 			deferredPrompt = null;

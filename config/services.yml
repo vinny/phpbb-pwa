@@ -22,11 +22,11 @@ services:
             - '@config'
             - '@controller.helper'
             - '@ext.manager'
+            - '@language'
 
     vinny.pwa.controller.offline:
         class: vinny\pwa\controller\offline
         arguments:
-            - '@config'
             - '@controller.helper'
             - '@language'
             - '@template'

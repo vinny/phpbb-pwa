@@ -1,113 +1,144 @@
 <?php
 /**
  *
- * @package vinny/pwa
- * @copyright (c) 2026 Vinny
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * PWA Enhancer. An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2026 Vinny <https://github.com/vinny>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
 namespace vinny\pwa\tests\event;
 
-class main_listener_test extends \phpbb\test_case
+use Detection\MobileDetect;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\event\data;
+use phpbb\extension\manager;
+use phpbb\request\request_interface;
+use phpbb\template\template;
+use phpbb\test_case;
+use phpbb\user;
+use vinny\pwa\event\main_listener;
+
+class main_listener_test extends test_case
 {
-    protected $config;
-    protected $user;
-    protected $request;
-    protected $template;
-    protected $ext_manager;
-    protected $mobile_detect;
-    protected $listener;
+	/** @var config */
+	protected $config;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+	/** @var user */
+	protected $user;
 
-        $this->config = new \phpbb\config\config([
-            'pwa_enabled'         => '1',
-            'pwa_mobile_style_id' => '2',
-            'pwa_force_on_mobile' => '1',
-            'pwa_force_on_pwa'    => '1',
-            'cookie_name'         => 'phpbb3_pwa',
-        ]);
+	/** @var request_interface */
+	protected $request;
 
-        $this->user = $this->createMock('\phpbb\user');
-        $this->user->data = ['user_style' => 1, 'session_id' => '123456789'];
-        
-        $this->request = $this->createMock('\phpbb\request\request_interface');
-        $this->template = $this->createMock('\phpbb\template\template');
-        $this->ext_manager = $this->createMock('\phpbb\extension\manager');
-        $this->mobile_detect = $this->createMock('\Detection\MobileDetect');
+	/** @var template */
+	protected $template;
 
-        $this->listener = clone $this->createPartialMock('\vinny\pwa\event\main_listener', []);
-        
-        $constructor = new \ReflectionMethod('\vinny\pwa\event\main_listener', '__construct');
-        $constructor->invoke($this->listener, $this->config, $this->user, $this->request, $this->template, $this->ext_manager);
+	/** @var helper */
+	protected $helper;
 
-        $reflection = new \ReflectionClass($this->listener);
-        $property = $reflection->getProperty('mobile_detect');
-        $property->setAccessible(true);
-        $property->setValue($this->listener, $this->mobile_detect);
-    }
+	/** @var manager */
+	protected $ext_manager;
 
-    public function test_force_style_on_mobile()
-    {
-        $this->request->method('variable')->willReturn(0);
-        $this->mobile_detect->method('isMobile')->willReturn(true);
-        $this->mobile_detect->method('isTablet')->willReturn(false);
+	/** @var MobileDetect */
+	protected $mobile_detect;
 
-        $event = new \phpbb\event\data(['style_id' => 1]);
-        
-        $this->listener->user_setup($event);
+	/** @var main_listener */
+	protected $listener;
 
-        $this->assertEquals(2, $event['style_id']);
-    }
+	protected function setUp(): void
+	{
+		parent::setUp();
 
-    public function test_ignore_style_if_tablet()
-    {
-        $this->request->method('variable')->willReturn(0);
-        $this->mobile_detect->method('isMobile')->willReturn(true);
-        $this->mobile_detect->method('isTablet')->willReturn(true);
+		$this->config = new config([
+			'pwa_enabled'			=> '1',
+			'pwa_mobile_style_id'	=> '2',
+			'pwa_force_on_mobile'	=> '1',
+			'pwa_force_on_pwa'		=> '1',
+			'cookie_name'			=> 'phpbb3_pwa',
+		]);
 
-        $event = new \phpbb\event\data(['style_id' => 1]);
-        
-        $this->listener->user_setup($event);
+		$this->user = $this->createMock(user::class);
+		$this->user->data = ['user_style' => 1, 'session_id' => '123456789'];
 
-        $this->assertEquals(1, $event['style_id']);
-    }
+		$this->request = $this->createMock(request_interface::class);
+		$this->template = $this->createMock(template::class);
+		$this->helper = $this->createMock(helper::class);
+		$this->ext_manager = $this->createMock(manager::class);
+		$this->mobile_detect = $this->createMock(MobileDetect::class);
 
-    public function test_force_style_on_pwa_mode_but_not_mobile()
-    {
-        $this->request->method('variable')->will($this->returnValueMap([
-            ['pwa_mode', 0, false, \phpbb\request\request_interface::REQUEST, 1]
-        ]));
+		$this->listener = new main_listener(
+			$this->config,
+			$this->user,
+			$this->request,
+			$this->template,
+			$this->helper,
+			$this->ext_manager
+		);
 
-        $this->mobile_detect->method('isMobile')->willReturn(false);
+		$reflection = new \ReflectionClass($this->listener);
+		$property = $reflection->getProperty('mobile_detect');
+		$property->setAccessible(true);
+		$property->setValue($this->listener, $this->mobile_detect);
+	}
 
-        $this->user->expects($this->once())->method('set_cookie');
+	public function test_force_style_on_mobile()
+	{
+		$this->request->method('variable')->willReturn(0);
+		$this->mobile_detect->method('isMobile')->willReturn(true);
+		$this->mobile_detect->method('isTablet')->willReturn(false);
 
-        $event = new \phpbb\event\data(['style_id' => 1]);
-        
-        $this->listener->user_setup($event);
+		$event = new data(['style_id' => 1]);
 
-        $this->assertEquals(1, $event['style_id']);
-    }
+		$this->listener->user_setup($event);
 
-    public function test_force_style_on_pwa_mode_and_mobile()
-    {
-        $this->request->method('variable')->will($this->returnValueMap([
-            ['pwa_mode', 0, false, \phpbb\request\request_interface::REQUEST, 1]
-        ]));
+		$this->assertEquals(2, $event['style_id']);
+	}
 
-        $this->mobile_detect->method('isMobile')->willReturn(true);
-        $this->mobile_detect->method('isTablet')->willReturn(false);
+	public function test_ignore_style_if_tablet()
+	{
+		$this->request->method('variable')->willReturn(0);
+		$this->mobile_detect->method('isMobile')->willReturn(true);
+		$this->mobile_detect->method('isTablet')->willReturn(true);
 
-        $this->user->expects($this->once())->method('set_cookie');
+		$event = new data(['style_id' => 1]);
 
-        $event = new \phpbb\event\data(['style_id' => 1]);
-        
-        $this->listener->user_setup($event);
+		$this->listener->user_setup($event);
 
-        $this->assertEquals(2, $event['style_id']);
-    }
+		$this->assertEquals(1, $event['style_id']);
+	}
+
+	public function test_force_style_on_pwa_mode_but_not_mobile()
+	{
+		$this->request->method('variable')->will($this->returnValueMap([
+			['pwa_mode', 0, false, request_interface::REQUEST, 1],
+		]));
+
+		$this->mobile_detect->method('isMobile')->willReturn(false);
+		$this->user->expects($this->once())->method('set_cookie');
+
+		$event = new data(['style_id' => 1]);
+
+		$this->listener->user_setup($event);
+
+		$this->assertEquals(1, $event['style_id']);
+	}
+
+	public function test_force_style_on_pwa_mode_and_mobile()
+	{
+		$this->request->method('variable')->will($this->returnValueMap([
+			['pwa_mode', 0, false, request_interface::REQUEST, 1],
+		]));
+
+		$this->mobile_detect->method('isMobile')->willReturn(true);
+		$this->mobile_detect->method('isTablet')->willReturn(false);
+		$this->user->expects($this->once())->method('set_cookie');
+
+		$event = new data(['style_id' => 1]);
+
+		$this->listener->user_setup($event);
+
+		$this->assertEquals(2, $event['style_id']);
+	}
 }

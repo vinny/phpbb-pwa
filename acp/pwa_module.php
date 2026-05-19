@@ -1,9 +1,10 @@
 <?php
 /**
  *
- * @package vinny/pwa
- * @copyright (c) 2026 Vinny
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * PWA Enhancer. An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2026 Vinny <https://github.com/vinny>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
@@ -122,7 +123,7 @@ class pwa_module
 
 		if ($file['error'] !== UPLOAD_ERR_OK)
 		{
-			$error[] = $user->lang('PWA_UPLOAD_ERROR') . ' (Code: ' . $file['error'] . ')';
+			$error[] = sprintf($user->lang('PWA_UPLOAD_ERROR_CODE'), (int) $file['error']);
 			return;
 		}
 

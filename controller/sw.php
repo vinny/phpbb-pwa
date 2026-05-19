@@ -1,50 +1,48 @@
 <?php
 /**
  *
- * @package vinny/pwa
- * @copyright (c) 2026 Vinny
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * PWA Enhancer. An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2026 Vinny <https://github.com/vinny>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
 
 namespace vinny\pwa\controller;
 
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\extension\manager;
+use phpbb\language\language;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class sw
 {
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
-	/** @var \phpbb\controller\helper */
+	/** @var helper */
 	protected $helper;
 
-	/** @var \phpbb\extension\manager */
+	/** @var manager */
 	protected $ext_manager;
 
-	/**
-	 * Constructor
-	 *
-	 * @param \phpbb\config\config     $config
-	 * @param \phpbb\controller\helper $helper
-	 * @param \phpbb\extension\manager $ext_manager
-	 */
+	/** @var language */
+	protected $language;
+
 	public function __construct(
-		\phpbb\config\config $config,
-		\phpbb\controller\helper $helper,
-		\phpbb\extension\manager $ext_manager
+		config $config,
+		helper $helper,
+		manager $ext_manager,
+		language $language
 	) {
 		$this->config = $config;
 		$this->helper = $helper;
 		$this->ext_manager = $ext_manager;
+		$this->language = $language;
 	}
 
-	/**
-	 * Return the Service Worker JavaScript.
-	 *
-	 * @return Response
-	 */
 	public function display()
 	{
 		$cache_version = (int) $this->config['pwa_cache_version'];
@@ -71,6 +69,8 @@ class sw
 		$cache_name = 'phpbb-pwa-v' . $cache_version;
 		$cache_name_js = json_encode($cache_name);
 		$offline_url_js = json_encode($offline_url);
+		$this->language->add_lang('pwa', 'vinny/pwa');
+		$offline_fallback_js = json_encode($this->language->lang('PWA_OFFLINE_FALLBACK'));
 
 		$sw_js = <<<JS
 'use strict';
@@ -165,7 +165,7 @@ self.addEventListener('fetch', event => {
 				return caches.match(OFFLINE_URL);
 			}
 
-			return new Response('You are offline.', {
+			return new Response({$offline_fallback_js}, {
 				status: 503,
 				headers: { 'Content-Type': 'text/plain' }
 			});

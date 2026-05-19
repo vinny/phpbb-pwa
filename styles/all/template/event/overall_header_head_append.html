@@ -20,7 +20,7 @@
 			webpushIntegrationActive: {{ S_PWA_WEBPUSH_INTEGRATION_ACTIVE ? 'true' : 'false' }}
 		};
 
-		(function(options) {
+		(function (options) {
 			'use strict';
 
 			if (!options.webpushIntegrationActive) {
@@ -40,7 +40,7 @@
 
 			Object.defineProperty(window, 'phpbbWebpushOptions', {
 				configurable: true,
-				set: function(webpushOptions) {
+				set: function (webpushOptions) {
 					patchWebpushOptions(webpushOptions);
 					Object.defineProperty(window, 'phpbbWebpushOptions', {
 						value: webpushOptions,
@@ -48,7 +48,7 @@
 						configurable: true
 					});
 				},
-				get: function() {
+				get: function () {
 					return undefined;
 				}
 			});

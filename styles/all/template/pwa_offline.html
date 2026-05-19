@@ -1,6 +1,6 @@
 {% INCLUDECSS '@vinny_pwa/pwa_offline.css' %}
 
-<!-- INCLUDE simple_header.html -->
+{% include 'simple_header.html' %}
 
 <div class="pwa-offline">
 	<div class="pwa-offline__icon" aria-hidden="true">&#9888;</div>
@@ -9,4 +9,4 @@
 	<a href="{{ U_PWA_BOARD }}" class="pwa-offline__button">{{ lang('PWA_OFFLINE_RETRY') }}</a>
 </div>
 
-<!-- INCLUDE simple_footer.html -->
+{% include 'simple_footer.html' %}
