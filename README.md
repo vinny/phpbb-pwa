@@ -5,7 +5,7 @@ Transform your phpBB board into a fully functional [Progressive Web App (PWA)](h
 ## Requirements
 
 - phpBB 3.3.0 or higher
-- PHP 8.0.0 or higher
+- PHP 8.2.0 or higher
 - An active SSL/HTTPS certificate on your server (Required by browsers for PWA and Service Workers)
 
 
@@ -16,7 +16,7 @@ Transform your phpBB board into a fully functional [Progressive Web App (PWA)](h
 - Smart Mobile Style Forcing: Uses the renowned Mobile-Detect library to identify mobile devices (excluding tablets if preferred) and intelligently applies a specific mobile template (e.g., MobilePro) of your choosing.
 - PWA Persisted Style: Differentiates between normal mobile browsing and accesses directly via the installed App icon (PWA Mode) and locks their session to the correct style.
 - Service Worker Integration: Includes a basic cache-first `sw.js` for statically caching assets, making your board load significantly faster on returning visits and adding pseudo-offline stability.
-- Advanced ACP Configuration: A complete control panel to enable/disable the extension, customize background and theme colors via a color picker, define the forced mobile style, and set the app icons.
+- Advanced ACP Configuration: A complete control panel to enable/disable the extension, customize background and theme colors via a color picker, define the forced mobile style, and set the app icon.
 
 ## Extension Demo
  - [https://vinny.quest/phpbb/index.php](https://vinny.quest/phpbb/index.php) (open on a mobile device)

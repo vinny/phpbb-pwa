@@ -1,106 +1,102 @@
-<!-- INCLUDE overall_header.html -->
+{% INCLUDECSS '@vinny_pwa/acp_pwa.css' %}
+{% include 'overall_header.html' %}
 
 <a id="maincontent"></a>
 
-<h1>{L_ACP_PWA_SETTINGS}</h1>
-<p>{L_ACP_PWA_SETTINGS_EXPLAIN}</p>
+<h1>{{ lang('ACP_PWA_SETTINGS') }}</h1>
+<p>{{ lang('ACP_PWA_SETTINGS_EXPLAIN') }}</p>
 
-<!-- IF S_ERROR -->
+{% if S_ERROR %}
 	<div class="errorbox">
-		<h3>{L_WARNING}</h3>
-		<p>{ERROR_MSG}</p>
+		<h3>{{ lang('WARNING') }}</h3>
+		<p>{{ ERROR_MSG }}</p>
 	</div>
-<!-- ENDIF -->
+{% endif %}
 
-<form id="pwa_settings" method="post" action="{U_ACTION}" enctype="multipart/form-data">
+<form id="pwa_settings" method="post" action="{{ U_ACTION }}" enctype="multipart/form-data">
 	<fieldset>
-		<legend>{L_GENERAL_SETTINGS}</legend>
-		
+		<legend>{{ lang('GENERAL_SETTINGS') }}</legend>
 		<dl>
-			<dt><label for="pwa_enabled">{L_PWA_ENABLED}{L_COLON}</label></dt>
+			<dt><label for="pwa_enabled">{{ lang('PWA_ENABLED') ~ lang('COLON') }}</label></dt>
 			<dd>
-				<label><input type="radio" class="radio" name="pwa_enabled" value="1"<!-- IF PWA_ENABLED --> id="pwa_enabled" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="pwa_enabled" value="0"<!-- IF not PWA_ENABLED --> id="pwa_enabled" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
-			</dd>
-		</dl>
-		
-		<dl>
-			<dt><label for="pwa_force_on_mobile">{L_PWA_FORCE_ON_MOBILE}{L_COLON}</label><br /><span>{L_PWA_FORCE_ON_MOBILE_EXPLAIN}</span></dt>
-			<dd>
-				<label><input type="radio" class="radio" name="pwa_force_on_mobile" value="1"<!-- IF PWA_FORCE_ON_MOBILE --> id="pwa_force_on_mobile" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="pwa_force_on_mobile" value="0"<!-- IF not PWA_FORCE_ON_MOBILE --> id="pwa_force_on_mobile" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+				<label><input type="radio" class="radio" id="pwa_enabled" name="pwa_enabled" value="1"{% if PWA_ENABLED %} checked{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pwa_enabled" value="0"{% if not PWA_ENABLED %} checked{% endif %}> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
 
 		<dl>
-			<dt><label for="pwa_force_on_pwa">{L_PWA_FORCE_ON_PWA}{L_COLON}</label><br /><span>{L_PWA_FORCE_ON_PWA_EXPLAIN}</span></dt>
+			<dt><label for="pwa_force_on_mobile">{{ lang('PWA_FORCE_ON_MOBILE') ~ lang('COLON') }}</label><br><span>{{ lang('PWA_FORCE_ON_MOBILE_EXPLAIN') }}</span></dt>
 			<dd>
-				<label><input type="radio" class="radio" name="pwa_force_on_pwa" value="1"<!-- IF PWA_FORCE_ON_PWA --> id="pwa_force_on_pwa" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="pwa_force_on_pwa" value="0"<!-- IF not PWA_FORCE_ON_PWA --> id="pwa_force_on_pwa" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+				<label><input type="radio" class="radio" id="pwa_force_on_mobile" name="pwa_force_on_mobile" value="1"{% if PWA_FORCE_ON_MOBILE %} checked{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pwa_force_on_mobile" value="0"{% if not PWA_FORCE_ON_MOBILE %} checked{% endif %}> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
-		
+
 		<dl>
-			<dt><label for="pwa_mobile_style_id">{L_PWA_MOBILE_STYLE}{L_COLON}</label><br /><span>{L_PWA_MOBILE_STYLE_EXPLAIN}</span></dt>
+			<dt><label for="pwa_force_on_pwa">{{ lang('PWA_FORCE_ON_PWA') ~ lang('COLON') }}</label><br><span>{{ lang('PWA_FORCE_ON_PWA_EXPLAIN') }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" id="pwa_force_on_pwa" name="pwa_force_on_pwa" value="1"{% if PWA_FORCE_ON_PWA %} checked{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pwa_force_on_pwa" value="0"{% if not PWA_FORCE_ON_PWA %} checked{% endif %}> {{ lang('NO') }}</label>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label for="pwa_mobile_style_id">{{ lang('PWA_MOBILE_STYLE') ~ lang('COLON') }}</label><br><span>{{ lang('PWA_MOBILE_STYLE_EXPLAIN') }}</span></dt>
 			<dd>
 				<select name="pwa_mobile_style_id" id="pwa_mobile_style_id">
-					<option value="0">{L_NONE}</option>
-					{PWA_MOBILE_STYLE_ID}
+					<option value="0">{{ lang('NONE') }}</option>
+					{% for pwa_style in loops.pwa_styles %}
+						<option value="{{ pwa_style.STYLE_ID }}"{% if pwa_style.S_SELECTED %} selected{% endif %}>{{ pwa_style.STYLE_NAME }}</option>
+					{% endfor %}
 				</select>
 			</dd>
 		</dl>
 
 		<dl>
-			<dt><label for="pwa_show_install_banner">{L_PWA_SHOW_INSTALL_BANNER}{L_COLON}</label><br /><span>{L_PWA_SHOW_INSTALL_BANNER_EXPLAIN}</span></dt>
+			<dt><label for="pwa_show_install_banner">{{ lang('PWA_SHOW_INSTALL_BANNER') ~ lang('COLON') }}</label><br><span>{{ lang('PWA_SHOW_INSTALL_BANNER_EXPLAIN') }}</span></dt>
 			<dd>
-				<label><input type="radio" class="radio" name="pwa_show_install_banner" value="1"<!-- IF PWA_SHOW_INSTALL_BANNER --> id="pwa_show_install_banner" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="pwa_show_install_banner" value="0"<!-- IF not PWA_SHOW_INSTALL_BANNER --> id="pwa_show_install_banner" checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+				<label><input type="radio" class="radio" id="pwa_show_install_banner" name="pwa_show_install_banner" value="1"{% if PWA_SHOW_INSTALL_BANNER %} checked{% endif %}> {{ lang('YES') }}</label>
+				<label><input type="radio" class="radio" name="pwa_show_install_banner" value="0"{% if not PWA_SHOW_INSTALL_BANNER %} checked{% endif %}> {{ lang('NO') }}</label>
 			</dd>
 		</dl>
 
 		<dl>
-			<dt><label>{L_PWA_PURGE_CACHE}</label><br /><span>{L_PWA_PURGE_CACHE_EXPLAIN}</span></dt>
-			<dd><input class="button1" type="submit" name="purge_cache" value="{L_PWA_PURGE_CACHE}" /></dd>
+			<dt><label>{{ lang('PWA_PURGE_CACHE') }}</label><br><span>{{ lang('PWA_PURGE_CACHE_EXPLAIN') }}</span></dt>
+			<dd><input class="button1" type="submit" name="purge_cache" value="{{ lang('PWA_PURGE_CACHE') }}"></dd>
 		</dl>
 	</fieldset>
 
 	<fieldset>
-		<legend>{L_ACP_PWA_SETTINGS_COLOURS}</legend>
+		<legend>{{ lang('ACP_PWA_SETTINGS_COLOURS') }}</legend>
 		<dl>
-			<dt><label for="pwa_theme_colour">{L_PWA_THEME_COLOUR}{L_COLON}</label></dt>
-			<dd><input type="color" id="pwa_theme_colour" name="pwa_theme_colour" value="{PWA_THEME_COLOUR}" /></dd>
+			<dt><label for="pwa_theme_colour">{{ lang('PWA_THEME_COLOUR') ~ lang('COLON') }}</label></dt>
+			<dd><input type="color" id="pwa_theme_colour" name="pwa_theme_colour" value="{{ PWA_THEME_COLOUR }}"></dd>
 		</dl>
 
 		<dl>
-			<dt><label for="pwa_background_colour">{L_PWA_BACKGROUND_COLOUR}{L_COLON}</label></dt>
-			<dd><input type="color" id="pwa_background_colour" name="pwa_background_colour" value="{PWA_BACKGROUND_COLOUR}" /></dd>
+			<dt><label for="pwa_background_colour">{{ lang('PWA_BACKGROUND_COLOUR') ~ lang('COLON') }}</label></dt>
+			<dd><input type="color" id="pwa_background_colour" name="pwa_background_colour" value="{{ PWA_BACKGROUND_COLOUR }}"></dd>
 		</dl>
 	</fieldset>
 
 	<fieldset>
-		<legend>{L_ACP_PWA_SETTINGS_ICONS}</legend>
+		<legend>{{ lang('ACP_PWA_SETTINGS_ICON') }}</legend>
 		<dl>
-			<dt><label for="pwa_icon_192">{L_PWA_ICON_192}{L_COLON}</label><br /><span>{L_PWA_ICON_192_EXPLAIN}</span></dt>
+			<dt><label for="pwa_icon_512">{{ lang('PWA_ICON') ~ lang('COLON') }}</label><br><span>{{ lang('PWA_ICON_EXPLAIN') }}</span></dt>
 			<dd>
-				<!-- IF PWA_ICON_192 --><img src="{PWA_ICON_192}" width="64" height="64" alt="" style="margin-bottom: 5px; display: block; border-radius: 8px; border: 1px solid #ccc;" /><!-- ENDIF -->
-				<input type="file" id="pwa_icon_192" name="pwa_icon_192" accept="image/png, image/svg+xml, image/webp" />
-			</dd>
-		</dl>
-
-		<dl>
-			<dt><label for="pwa_icon_512">{L_PWA_ICON_512}{L_COLON}</label><br /><span>{L_PWA_ICON_512_EXPLAIN}</span></dt>
-			<dd>
-				<!-- IF PWA_ICON_512 --><img src="{PWA_ICON_512}" width="64" height="64" alt="" style="margin-bottom: 5px; display: block; border-radius: 8px; border: 1px solid #ccc;" /><!-- ENDIF -->
-				<input type="file" id="pwa_icon_512" name="pwa_icon_512" accept="image/png, image/svg+xml, image/webp" />
+				{% if PWA_ICON_512 %}
+					<img src="{{ PWA_ICON_512 }}" width="64" height="64" alt="" class="pwa-acp-icon-preview">
+				{% endif %}
+				<input type="file" class="inputbox autowidth" id="pwa_icon_512" name="pwa_icon_512" accept="image/png">
 			</dd>
 		</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
-		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
-		{S_FORM_TOKEN}
+		<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}">&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{{ lang('RESET') }}">
+		{{ S_FORM_TOKEN }}
 	</fieldset>
 </form>
 
-<!-- INCLUDE overall_footer.html -->
+{% include 'overall_footer.html' %}

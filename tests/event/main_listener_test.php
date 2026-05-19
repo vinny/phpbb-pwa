@@ -15,6 +15,7 @@ class main_listener_test extends \phpbb\test_case
     protected $user;
     protected $request;
     protected $template;
+    protected $ext_manager;
     protected $mobile_detect;
     protected $listener;
 
@@ -35,12 +36,13 @@ class main_listener_test extends \phpbb\test_case
         
         $this->request = $this->createMock('\phpbb\request\request_interface');
         $this->template = $this->createMock('\phpbb\template\template');
+        $this->ext_manager = $this->createMock('\phpbb\extension\manager');
         $this->mobile_detect = $this->createMock('\Detection\MobileDetect');
 
         $this->listener = clone $this->createPartialMock('\vinny\pwa\event\main_listener', []);
         
         $constructor = new \ReflectionMethod('\vinny\pwa\event\main_listener', '__construct');
-        $constructor->invoke($this->listener, $this->config, $this->user, $this->request, $this->template);
+        $constructor->invoke($this->listener, $this->config, $this->user, $this->request, $this->template, $this->ext_manager);
 
         $reflection = new \ReflectionClass($this->listener);
         $property = $reflection->getProperty('mobile_detect');

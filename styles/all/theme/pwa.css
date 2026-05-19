@@ -1,0 +1,89 @@
+.pwa-install-banner {
+	align-items: center;
+	background: var(--pwa-theme-colour, #000);
+	bottom: 0;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.25);
+	color: #fff;
+	display: flex;
+	font-family: sans-serif;
+	gap: 12px;
+	justify-content: space-between;
+	left: 0;
+	padding: 14px 16px;
+	position: fixed;
+	right: 0;
+	z-index: 9999;
+}
+
+.pwa-install-banner[hidden] {
+	display: none;
+}
+
+.pwa-install-banner__content {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	gap: 10px;
+	min-width: 0;
+}
+
+.pwa-install-banner__icon {
+	border-radius: 10px;
+	flex-shrink: 0;
+	height: 44px;
+	width: 44px;
+}
+
+.pwa-install-banner__text {
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.4;
+	min-width: 0;
+	overflow: hidden;
+}
+
+.pwa-install-banner__title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.pwa-install-banner__subtitle {
+	font-size: 12px;
+	opacity: 0.85;
+}
+
+.pwa-install-banner__actions {
+	display: flex;
+	flex-shrink: 0;
+	gap: 8px;
+}
+
+.pwa-install-banner__dismiss,
+.pwa-install-banner__install {
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 13px;
+	padding: 7px 10px;
+	white-space: nowrap;
+}
+
+.pwa-install-banner__dismiss {
+	background: transparent;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	color: #fff;
+}
+
+.pwa-install-banner__install {
+	background: #fff;
+	border: 0;
+	color: var(--pwa-theme-colour, #000);
+	font-weight: bold;
+	padding-inline: 12px;
+}
+
+@media all and (display-mode: standalone) {
+	.pwa-install-banner {
+		display: none !important;
+	}
+}

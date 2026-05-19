@@ -1,0 +1,50 @@
+body {
+	align-items: center;
+	background-color: #f7f9fa;
+	color: #333;
+	display: flex;
+	flex-direction: column;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	height: 100vh;
+	justify-content: center;
+	margin: 0;
+	padding: 20px;
+	text-align: center;
+}
+
+.pwa-offline__icon {
+	color: #999;
+	font-size: 64px;
+	margin-bottom: 20px;
+}
+
+.pwa-offline__title {
+	color: #222;
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+.pwa-offline__message {
+	color: #666;
+	font-size: 16px;
+	margin-bottom: 20px;
+	max-width: 400px;
+}
+
+.pwa-offline__button {
+	background-color: #000;
+	border-radius: 4px;
+	color: #fff;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 500;
+	padding: 10px 24px;
+	text-decoration: none;
+	transition: opacity 0.2s;
+}
+
+.pwa-offline__button:hover {
+	color: #fff;
+	opacity: 0.8;
+	text-decoration: none;
+}

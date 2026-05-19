@@ -49,8 +49,7 @@ class v100_initial extends \phpbb\db\migration\migration
             ['config.add', ['pwa_show_install_banner', '1']],
             ['config.add', ['pwa_cache_version', '1']],
             
-            // Allow storing icons as base64 or paths in the future, initialize empties
-            ['config.add', ['pwa_icon_192', '']],
+            // Allow storing the app icon path in the future, initialize empty
             ['config.add', ['pwa_icon_512', '']],
 
             // Add the ACP Module Class
@@ -89,7 +88,6 @@ class v100_initial extends \phpbb\db\migration\migration
             ['config.remove', ['pwa_background_colour']],
             ['config.remove', ['pwa_show_install_banner']],
             ['config.remove', ['pwa_cache_version']],
-            ['config.remove', ['pwa_icon_192']],
             ['config.remove', ['pwa_icon_512']],
         ];
     }

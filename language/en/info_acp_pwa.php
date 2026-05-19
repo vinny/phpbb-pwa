@@ -22,7 +22,7 @@ $lang = array_merge($lang, [
     'ACP_PWA_SETTINGS'                => 'PWA Settings',
     'ACP_PWA_SETTINGS_EXPLAIN'        => 'Here you can configure the Progressive Web App parameters and mobile detection for your board.',
     'ACP_PWA_SETTINGS_COLOURS'        => 'Colours',
-    'ACP_PWA_SETTINGS_ICONS'          => 'App Icons',
+    'ACP_PWA_SETTINGS_ICON'           => 'Icon',
     
     'PWA_ENABLED'                     => 'Enable PWA Enhancer',
     
@@ -38,11 +38,8 @@ $lang = array_merge($lang, [
     'PWA_THEME_COLOUR'                => 'Theme Colour',
     'PWA_BACKGROUND_COLOUR'           => 'Background Colour',
     
-    'PWA_ICON_192'                    => 'Icon 192x192',
-    'PWA_ICON_192_EXPLAIN'            => 'Upload a maskable icon with exactly 192x192 pixels. Allowed formats: PNG.',
-    
-    'PWA_ICON_512'                    => 'Icon 512x512',
-    'PWA_ICON_512_EXPLAIN'            => 'Upload a splash screen icon with exactly 512x512 pixels. Allowed formats: PNG.',
+    'PWA_ICON'                        => 'Icon',
+    'PWA_ICON_EXPLAIN'                => 'Upload an app icon with exactly 512x512 pixels. Only PNG is supported.',
 
     'PWA_INVALID_FILE_TYPE'           => 'Invalid file type uploaded. Only PNG format is allowed.',
     'PWA_INVALID_IMAGE_DIMENSIONS'    => 'Invalid image dimensions. The uploaded image must be exactly %dx%d pixels.',

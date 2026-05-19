@@ -11,18 +11,18 @@ namespace vinny\pwa\acp;
 
 class pwa_info
 {
-    public function module()
-    {
-        return [
-            'filename' => '\vinny\pwa\acp\pwa_module',
-            'title'    => 'ACP_PWA',
-            'modes'    => [
-                'settings' => [
-                    'title' => 'ACP_PWA_SETTINGS',
-                    'auth'  => 'ext_vinny/pwa && acl_a_board',
-                    'cat'   => ['ACP_PWA']
-                ],
-            ],
-        ];
-    }
+	public function module()
+	{
+		return [
+			'filename'	=> '\vinny\pwa\acp\pwa_module',
+			'title'		=> 'ACP_PWA',
+			'modes'		=> [
+				'settings' => [
+					'title'	=> 'ACP_PWA_SETTINGS',
+					'auth'	=> 'ext_vinny/pwa && acl_a_board',
+					'cat'	=> ['ACP_PWA'],
+				],
+			],
+		];
+	}
 }

@@ -161,8 +161,8 @@ class main_listener implements EventSubscriberInterface
             'S_PWA_WEBPUSH_INTEGRATION_ACTIVE' => $is_webpush_active,
             'PWA_THEME_COLOUR'                 => $this->config['pwa_theme_colour'],
             'PWA_BACKGROUND_COLOUR'            => $this->config['pwa_background_colour'],
-            'PWA_ICON_192'                     => $this->config['pwa_icon_192'] ? generate_board_url() . '/images/pwa_icons/' . $this->config['pwa_icon_192'] : '',
             'PWA_ICON_512'                     => $this->config['pwa_icon_512'] ? generate_board_url() . '/images/pwa_icons/' . $this->config['pwa_icon_512'] : '',
+            'PWA_MODE_COOKIE_NAME'             => $this->config['cookie_name'] . '_pwa_mode',
             'U_PWA_MANIFEST'                   => $manifest_url,
             'U_PWA_SW'                         => $sw_url,
         ]);
