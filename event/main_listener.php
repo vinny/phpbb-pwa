@@ -92,7 +92,7 @@ class main_listener implements EventSubscriberInterface
 			return;
 		}
 
-		$is_mobile = $this->mobile_detect->isMobile() && !$this->mobile_detect->isTablet();
+		$is_mobile = $this->mobile_detect->isMobile();
 		$is_pwa = false;
 
 		if ($this->request->variable('pwa_mode', 0) === 1)
@@ -127,7 +127,7 @@ class main_listener implements EventSubscriberInterface
 
 		$manifest_url = $this->helper->route('vinny_pwa_manifest', [], true, false, UrlGeneratorInterface::ABSOLUTE_URL);
 		$sw_url = $this->helper->route('vinny_pwa_sw', [], true, false, UrlGeneratorInterface::ABSOLUTE_URL);
-		$is_mobile = $this->mobile_detect->isMobile() && !$this->mobile_detect->isTablet();
+		$is_mobile = $this->mobile_detect->isMobile();
 		$is_webpush_active = $this->ext_manager->is_enabled('phpbb/webpushnotifications');
 
 		$this->template->assign_vars([

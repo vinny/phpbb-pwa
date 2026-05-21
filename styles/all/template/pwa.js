@@ -4,9 +4,40 @@
 	var options = window.phpbbPwaOptions || {};
 	var deferredPrompt = null;
 	var dismissedKey = 'pwa_banner_dismissed';
+	var iosModeReloadKey = 'pwa_ios_mode_reloaded';
 
 	function isStandalone() {
 		return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+	}
+
+	function isIosDevice() {
+		return /iPad|iPhone|iPod/.test(window.navigator.userAgent) || (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
+	}
+
+	function hasPwaModeCookie() {
+		if (!options.pwaModeCookieName) {
+			return false;
+		}
+
+		return document.cookie.split(';').some(function (cookie) {
+			return cookie.trim().indexOf(encodeURIComponent(options.pwaModeCookieName) + '=') === 0;
+		});
+	}
+
+	function getPwaModeUrl() {
+		try {
+			var url = new URL(window.location.href);
+
+			if (url.searchParams.get('pwa_mode') === '1') {
+				return '';
+			}
+
+			url.searchParams.set('pwa_mode', '1');
+
+			return url.toString();
+		} catch (e) {
+			return '';
+		}
 	}
 
 	function setPwaModeCookie() {
@@ -17,6 +48,38 @@
 		var expireDate = new Date();
 		expireDate.setTime(expireDate.getTime() + (365 * 24 * 60 * 60 * 1000));
 		document.cookie = encodeURIComponent(options.pwaModeCookieName) + '=1; expires=' + expireDate.toUTCString() + '; path=/; SameSite=Lax';
+	}
+
+	function ensureStandalonePwaMode() {
+		if (!isStandalone()) {
+			return;
+		}
+
+		var pwaCookieExists = hasPwaModeCookie();
+
+		setPwaModeCookie();
+
+		if (!isIosDevice() || pwaCookieExists) {
+			return;
+		}
+
+		var pwaModeUrl = getPwaModeUrl();
+
+		if (!pwaModeUrl) {
+			return;
+		}
+
+		try {
+			if (window.sessionStorage.getItem(iosModeReloadKey) === '1') {
+				return;
+			}
+
+			window.sessionStorage.setItem(iosModeReloadKey, '1');
+		} catch (e) {
+			// Private browsing may block sessionStorage.
+		}
+
+		window.location.replace(pwaModeUrl);
 	}
 
 	function localStorageGet(key) {
@@ -133,10 +196,7 @@
 		});
 	}
 
-	if (isStandalone()) {
-		setPwaModeCookie();
-	}
-
+	ensureStandalonePwaMode();
 	removeDuplicateManifests();
 	registerServiceWorker();
 

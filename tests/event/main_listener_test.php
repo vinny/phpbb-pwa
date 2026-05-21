@@ -96,7 +96,7 @@ class main_listener_test extends test_case
 		$this->assertEquals(2, $event['style_id']);
 	}
 
-	public function test_ignore_style_if_tablet()
+	public function test_force_style_on_tablet()
 	{
 		$this->request->method('variable')->willReturn(0);
 		$this->mobile_detect->method('isMobile')->willReturn(true);
@@ -106,7 +106,7 @@ class main_listener_test extends test_case
 
 		$this->listener->user_setup($event);
 
-		$this->assertEquals(1, $event['style_id']);
+		$this->assertEquals(2, $event['style_id']);
 	}
 
 	public function test_force_style_on_pwa_mode_but_not_mobile()
